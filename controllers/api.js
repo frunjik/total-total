@@ -1,5 +1,7 @@
 exports.install = function() {
 
+	ROUTE('+API    /api/    -fs                  *Fs                  --> query');
+
 	// Files & Directories
 	ROUTE('+API    /api/    -files               *Files               --> query');
 	ROUTE('+API    /api/    +files_rename        *Files/Rename        --> exec');

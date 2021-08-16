@@ -28,6 +28,7 @@
 	<div data---="shortcuts"></div>
 
 	<div data---="part__common.page__if:browser;url:/parts/browser.html"></div>
+	<div data---="part__common.page__if:explorer;url:/parts/explorer.html"></div>
 
 	@{if user.sa}
 	<div data---="importer__common.form__if:settingsform;url:/forms/settings.html"></div>
@@ -43,7 +44,8 @@
 		var common = {};
 
 		ENV('ts', 'yyyy-MM-mm HH:mm');
-		common.page = 'browser';
+		// common.page = 'browser';
+		common.page = 'explorer';
 
 		ON('@flag showloading', function() {
 			SETTER('loading/show');
