@@ -1,0 +1,6 @@
+name                             : Files
+allow_custom_titles              : true
+
+// Path to file storage
+path                             : private
+secret_download      (generate)  : 30
