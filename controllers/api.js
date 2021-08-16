@@ -1,6 +1,7 @@
 exports.install = function() {
 
 	ROUTE('+API    /api/    -fs                  *Fs                  --> query');
+	ROUTE('GET     /fs-view/',   fs_view);
 
 	// Files & Directories
 	ROUTE('+API    /api/    -files               *Files               --> query');
@@ -78,5 +79,39 @@ function download() {
 		$.file('~' + FUNC.path(userid, path), U.getName(path));
 	else
 		$.invalid(404);
+}
 
+function fs_view() {
+	var $ = this;
+	var path = $.query.path || '/';
+
+	var userid = null;
+
+	// Auth - Token check
+	var token = $.query.token || '';
+	if (token.length)
+		userid = token.decrypt(CONF.secret_download);
+
+	// Auth - User check
+	if ($.user)
+		userid = $.user.id;
+
+	// Auth - Invalid
+	if (!userid) {
+		$.invalid(401);
+		return;
+	}
+
+	// Perform download
+	if (FUNC.valid(path))
+		PATH.fs.readFile(FUNC.path('', path), 'utf8', function(err, data) {
+			if(err) {
+				console.error(err);
+				$.invalid(500);
+			}
+			else
+				$.success(data);
+		});
+	else
+		$.invalid(404);
 }

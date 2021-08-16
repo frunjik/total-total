@@ -77,6 +77,11 @@
 		</section>
 
 		<main style="background-color:darkgray;color:#FFF">
+
+			<div style="width:100%">
+				<div data---="codemirror__common.filedata__type:htmlmixed;required:true;height:880"></div>
+			</div>
+
 		</main>
 
 	</div>
@@ -128,8 +133,16 @@
 			var path = el.attrd('path');
 			if (isdir)
 				exports.browse(path);
-			else
-				location.href = '/download/?path=' + encodeURIComponent(path);
+			else {
+				// location.href = '/download/?path=' + encodeURIComponent(path);
+				AJAX('GET /fs-view?path=' + encodeURIComponent(path), function(value, err, response) {
+					if (err) {
+						// Error handling
+						console.error(error);
+					}
+					SET('common.filedata', value.value);
+				});
+			}
 		};
 
 		exports.view = function(el) {
@@ -211,8 +224,17 @@
 			opt.callback = function(item) {
 				if (item.isdirectory)
 					exports.browse(item.path);
-				else
-					location.href = '/download/?path=' + encodeURIComponent(item.path);
+				else {
+					console.log(item);
+					// location.href = '/download/?path=' + encodeURIComponent(item.path);
+					// AJAX('GET /fs-view?path=' + encodeURIComponent(item.path), function(value, err, response) {
+					// 	if (err) {
+					// 		// Error handling
+					// 		console.error(err);
+					// 	}
+					// 	SET('common.filedata', value.value);
+					// });
+				}
 			};
 			SETTER('spotlight/show', opt);
 		};
