@@ -21,53 +21,66 @@
 			{{ end }}
 		</script>
 	</div>
-	<div data---="templates__?.items__parent:window;template:?.view;drop:?/drop;margin:90;contextmenu:?/contextmenu__[]">
 
-		<script type="text/html" data-name="empty">
-			<div class="gray">
-				<i class="far fa-folder fa-4x"></i>
-				<div class="help">
-					<b>@(This folder is empty)</b><br />
-					@(Drag & Drop files here to upload)
-				</div>
-			</div>
-		</script>
+	<div data---="navlayout__common.menu__parent:window;width:400;hide:xs" class="invisible">
 
-		<script type="text/html" data-name="list">
-			<div class="list">
-			{{ foreach m in value }}
-				<figure class="exec item{{ if m.up }} up{{ fi }}{{ if m.isdirectory || m.up }} droppable directory{{ fi }}" data-exec="?/path" data-path="{{ m.path }}" draggable="true">
-					<section>
-						{{ if !m.up }}
-							<span class="date">{{ m.dtupdated | format('[ts]') }}</span>
-							{{ if !m.isdirectory }}
-							<span class="size">{{ m.size | filesize }}</span>
-							{{ fi }}
-						{{ fi }}
-						<div class="name{{ if m.isdirectory }} b{{ fi }}">{{ if !m.up }}<i class="{{ m.icon }}"></i>{{ fi }}{{ m.name }}</div>
-					</section>
-				</figure>
-			{{ end }}
-			</div>
-		</script>
+		<section>
 
-		<script type="text/html" data-name="icons">
-			<div class="icons">
-			{{ foreach m in value }}
-				<figure class="exec item{{ if m.up }} up{{ fi }}{{ if m.isdirectory || m.up }} droppable directory{{ fi }}" data-exec="?/path" data-path="{{ m.path }}" title="{{ m.name }}" draggable="true">
-					<div class="icon"><i class="{{ m.icon }}"></i></div>
-					<div class="meta">
-						<div class="name">{{ m.name }}</div>
-						{{ if !m.up }}
-							<span class="size">{{ m.size | filesize }}</span>
-						{{ fi }}
+			<div data---="templates__?.items__parent:window;template:?.view;drop:?/drop;margin:90;contextmenu:?/contextmenu__[]">
+
+				<script type="text/html" data-name="empty">
+					<div class="gray">
+						<i class="far fa-folder fa-4x"></i>
+						<div class="help">
+							<b>@(This folder is empty)</b><br />
+							@(Drag & Drop files here to upload)
+						</div>
 					</div>
-				</figure>
-			{{ end }}
+				</script>
+
+				<script type="text/html" data-name="list">
+					<div class="list">
+					{{ foreach m in value }}
+						<figure class="exec item{{ if m.up }} up{{ fi }}{{ if m.isdirectory || m.up }} droppable directory{{ fi }}" data-exec="?/path" data-path="{{ m.path }}" draggable="true">
+							<section>
+								{{ if !m.up }}
+									<span class="date">{{ m.dtupdated | format('[ts]') }}</span>
+									{{ if !m.isdirectory }}
+									<span class="size">{{ m.size | filesize }}</span>
+									{{ fi }}
+								{{ fi }}
+								<div class="name{{ if m.isdirectory }} b{{ fi }}">{{ if !m.up }}<i class="{{ m.icon }}"></i>{{ fi }}{{ m.name }}</div>
+							</section>
+						</figure>
+					{{ end }}
+					</div>
+				</script>
+
+				<script type="text/html" data-name="icons">
+					<div class="icons">
+					{{ foreach m in value }}
+						<figure class="exec item{{ if m.up }} up{{ fi }}{{ if m.isdirectory || m.up }} droppable directory{{ fi }}" data-exec="?/path" data-path="{{ m.path }}" title="{{ m.name }}" draggable="true">
+							<div class="icon"><i class="{{ m.icon }}"></i></div>
+							<div class="meta">
+								<div class="name">{{ m.name }}</div>
+								{{ if !m.up }}
+									<span class="size">{{ m.size | filesize }}</span>
+								{{ fi }}
+							</div>
+						</figure>
+					{{ end }}
+					</div>
+				</script>
+
 			</div>
-		</script>
+
+		</section>
+
+		<main style="background-color:darkgray;color:#FFF">
+		</main>
 
 	</div>
+
 </div>
 
 <script>
@@ -75,6 +88,7 @@
 	PLUGIN('~PATH~', function(exports) {
 
 		SET('~PATH~.view', 'list');
+		SET('common.menu', true);
 
 		exports.refresh = function() {
 
