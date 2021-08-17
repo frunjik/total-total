@@ -31,8 +31,8 @@ FUNC.file_details = function($, path_rel, callback) {
 
 	// Attach download url (only for files)
 	if (!obj.isdirectory)
-		obj.url = CONF.url + '/fs_load/?path=' + encodeURIComponent(obj.path) + '&token=' + obj.token;
 		// JVH
+		obj.url = CONF.url + '/fs_load/?path=' + encodeURIComponent(obj.path) + '&token=' + obj.token;
 		// obj.url = CONF.url + '/download/?path=' + encodeURIComponent(obj.path) + '&token=' + obj.token;
 
 	// Get details
