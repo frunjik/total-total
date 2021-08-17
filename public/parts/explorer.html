@@ -76,10 +76,15 @@
 
 		</section>
 
-		<main style="background-color:darkgray;color:#FFF">
+		<main>
+			<div class="toolbar">
+				<button class="exec" data-exec="?/save" title="@(Save file)"><i class="fa fa-cloud-upload"></i></button>
+				<button class="exec" data-exec="?/load" title="@(Load file)"><i class="fa fa-cloud-download"></i></button>
+				<label data-bind="common.filename__html"></label>
+			</div>
 
 			<div style="width:100%">
-				<div data---="codemirror__common.filedata__type:htmlmixed;required:true;height:880"></div>
+				<div data---="codemirror__common.filedata__type:htmlmixed;required:false;height:880"></div>
 			</div>
 
 		</main>
@@ -93,7 +98,10 @@
 	PLUGIN('~PATH~', function(exports) {
 
 		SET('~PATH~.view', 'list');
+
 		SET('common.menu', true);
+		SET('common.filedata', '');
+		SET('common.filename', '');
 
 		exports.refresh = function() {
 
@@ -128,20 +136,41 @@
 			SETTER('floatinginput/show', opt);
 		};
 
+		exports.save = function(el) {
+			AJAX('POST /fs-save?path=' + encodeURIComponent(GET('common.filename')), {data: GET('common.filedata')}, function(value, err, response) {
+				if (err) {
+					console.error(error);
+				}
+				exports.browse();
+			});
+		};
+
+		exports.load = function(el) {
+			AJAX('GET /fs-load?path=' + encodeURIComponent(GET('common.filename')), function(value, err, response) {
+				if (err) {
+					console.error(error);
+				} else {
+					SET('common.filedata', value ? value.value : value || '');
+				}
+			});
+		};
+
 		exports.path = function(el) {
 			var isdir = el.hclass('directory');
 			var path = el.attrd('path');
 			if (isdir)
 				exports.browse(path);
 			else {
-				// location.href = '/download/?path=' + encodeURIComponent(path);
-				AJAX('GET /fs-view?path=' + encodeURIComponent(path), function(value, err, response) {
-					if (err) {
-						// Error handling
-						console.error(error);
-					}
-					SET('common.filedata', value.value);
-				});
+				SET('common.filename', path);
+				exports.load();
+				// AJAX('GET /fs-load?path=' + encodeURIComponent(path), function(value, err, response) {
+				// 	if (err) {
+				// 		console.error(error);
+				// 	} else {
+				// 		SET('common.filedata', value ? value.value : value || '');
+				// 		SET('common.filename', path);
+				// 	}
+				// });
 			}
 		};
 
