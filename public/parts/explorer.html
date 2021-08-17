@@ -3,11 +3,11 @@
 	<div class="toolbar">
 		<button data-bind="?.view__.selected:value==='list'" class="exec" data-exec="?/view" data-name="list" title="@(Show as list)"><i class="fas fa-list"></i></button>
 		<button data-bind="?.view__.selected:value==='icons'" class="exec" data-exec="?/view" data-name="icons" title="@(Show as icons)"><i class="fas fa-th"></i></button>
+		<hr />
+		<button class="exec" data-exec="?/search" title="@(Search)"><i class="fa fa-search"></i></button>
 <!--
 		<button class="highlight exec" data-exec="?/upload" title="@(Upload file to the current directory)"><i class="fa fa-cloud-upload"></i></button>
 		<button class="exec" data-exec="?/create" title="@(Create directory)"><i class="fa fa-folder-plus"></i></button>
-		<button class="exec" data-exec="?/search" title="@(Search)"><i class="fa fa-search"></i></button>
-		<hr />
 		<hr />
 		<button class="exec" data-exec="?/settings" title="@(Settings)"><i class="fa fa-cog"></i></button>
  -->
@@ -212,7 +212,7 @@
 						opt.element = figure;
 						opt.value = figure.find('.name').text();
 						opt.callback = function(val) {
-							val && DAPI('files_rename', { from: path, name: val.replace(/\/|\\|"|\.{2,}|,/g, '') }, ASETTER('message/response', function() {
+							val && DAPI('fs_rename', { from: path, name: val.replace(/\/|\\|"|\.{2,}|,/g, '') }, ASETTER('message/response', function() {
 								exports.browse();
 							}));
 						};
@@ -222,7 +222,7 @@
 
 					if (item.id === 'remove') {
 						SETTER('approve/show', (isdir ? '@(Are you sure you want to remove selected directory <b>"{0}"</b>?)' : '@(Are you sure you want to remove selected file <b>"{0}"</b>?)').format(path.substring(1)), '"far fa-trash-alt" @(Remove)', function() {
-							DAPI('files_remove', { path: path }, ASETTER('message/response', function() {
+							DAPI('fs_remove', { path: path }, ASETTER('message/response', function() {
 								exports.browse();
 							}));
 						});
@@ -239,7 +239,7 @@
 
 		exports.search = function(el) {
 			var opt = {};
-			opt.search = 'API ' + DEF.api + ' files_search?q={0}';
+			opt.search = 'API ' + DEF.api + ' fs_search?q={0}';
 			opt.remap = function(items) {
 				for (var i = 0; i < items.length; i++)
 					items[i].name = items[i].path;
@@ -248,15 +248,8 @@
 				if (item.isdirectory)
 					exports.browse(item.path);
 				else {
-					console.log(item);
-					// location.href = '/download/?path=' + encodeURIComponent(item.path);
-					// AJAX('GET /fs-view?path=' + encodeURIComponent(item.path), function(value, err, response) {
-					// 	if (err) {
-					// 		// Error handling
-					// 		console.error(err);
-					// 	}
-					// 	SET('common.filedata', value.value);
-					// });
+					SET('common.filename', item.path);
+					exports.load();
 				}
 			};
 			SETTER('spotlight/show', opt);
@@ -316,7 +309,7 @@
 			var data = new FormData();
 
 			if (dragged) {
-				DAPI('files_move', { from: dragged.attrd('path'), to: target.attrd('path') }, ASETTER('message/response', function() {
+				DAPI('fs_move', { from: dragged.attrd('path'), to: target.attrd('path') }, ASETTER('message/response', function() {
 					exports.browse();
 				}));
 				return;
