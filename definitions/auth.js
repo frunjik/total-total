@@ -1,5 +1,5 @@
 AUTH(function($) {
 	// Here you can implement your custom authorization.
-	// User's id is used as his root folder so make sure its always unique for each user.
+	// User's id is used as root folder.
 	$.success({ id: '', name: 'Admin', sa: true });
 });
