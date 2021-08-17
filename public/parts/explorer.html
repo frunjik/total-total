@@ -152,7 +152,7 @@
 				if (err) {
 					console.error(error);
 				} else {
-					SET('common.filedata', value ? value.value : value || '');
+					SET('common.filedata', (value ? value.value : value) || '');
 				}
 			});
 		};
@@ -165,14 +165,6 @@
 			else {
 				SET('common.filename', path);
 				exports.load();
-				// AJAX('GET /fs-load?path=' + encodeURIComponent(path), function(value, err, response) {
-				// 	if (err) {
-				// 		console.error(error);
-				// 	} else {
-				// 		SET('common.filedata', value ? value.value : value || '');
-				// 		SET('common.filename', path);
-				// 	}
-				// });
 			}
 		};
 
