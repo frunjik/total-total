@@ -4,10 +4,10 @@
 		<button data-bind="?.view__.selected:value==='list'" class="exec" data-exec="?/view" data-name="list" title="@(Show as list)"><i class="fas fa-list"></i></button>
 		<button data-bind="?.view__.selected:value==='icons'" class="exec" data-exec="?/view" data-name="icons" title="@(Show as icons)"><i class="fas fa-th"></i></button>
 		<hr />
+		<button class="exec" data-exec="?/create" title="@(Create directory)"><i class="fa fa-folder-plus"></i></button>
 		<button class="exec" data-exec="?/search" title="@(Search)"><i class="fa fa-search"></i></button>
 <!--
 		<button class="highlight exec" data-exec="?/upload" title="@(Upload file to the current directory)"><i class="fa fa-cloud-upload"></i></button>
-		<button class="exec" data-exec="?/create" title="@(Create directory)"><i class="fa fa-folder-plus"></i></button>
 		<hr />
 		<button class="exec" data-exec="?/settings" title="@(Settings)"><i class="fa fa-cog"></i></button>
  -->
@@ -131,7 +131,7 @@
 			opt.icon = 'far fa-folder';
 			opt.placeholder = '@(folder)';
 			opt.callback = function(val) {
-				val && DAPI('directory_create', { path: FUNC.path(model.path, val) + '/' }, ASETTER('message/response', function() {
+				val && DAPI('fs_create', { path: FUNC.path(model.path, val) + '/' }, ASETTER('message/response', function() {
 					exports.browse();
 				}));
 			};
@@ -139,7 +139,7 @@
 		};
 
 		exports.save = function(el) {
-			AJAX('POST /fs-save?path=' + encodeURIComponent(GET('common.filename')), {data: GET('common.filedata')}, function(value, err, response) {
+			AJAX('POST /fs_save?path=' + encodeURIComponent(GET('common.filename')), {data: GET('common.filedata')}, function(value, err, response) {
 				if (err) {
 					console.error(error);
 				}
@@ -148,7 +148,7 @@
 		};
 
 		exports.load = function(el) {
-			AJAX('GET /fs-load?path=' + encodeURIComponent(GET('common.filename')), function(value, err, response) {
+			AJAX('GET /fs_load?path=' + encodeURIComponent(GET('common.filename')), function(value, err, response) {
 				if (err) {
 					console.error(error);
 				} else {
@@ -200,7 +200,7 @@
 				opt.callback = function(item) {
 
 					if (item.id === 'copy') {
-						DAPI('files_link', { path: path }, ASETTER('message/response', '@(The link to the file has been copied successfully into the clipboard)', function(response) {
+						DAPI('fs_link', { path: path }, ASETTER('message/response', '@(The link to the file has been copied successfully into the clipboard)', function(response) {
 							SETTER('clipboard/copy', response.value);
 						}));
 						return;

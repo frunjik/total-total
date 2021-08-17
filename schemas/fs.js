@@ -184,6 +184,7 @@ NEWSCHEMA('Fs', function(schema) {
 		$.audit(path);
 
 		FUNC.file_details($, path, function(file) {
+
 			$.success(file.url);
 		});
 
