@@ -15,7 +15,7 @@ NEWSCHEMA('Fs/Rename', function(schema) {
 			// TMS
 			PUBLISH('file_rename', file);
 
-			model.from = FUNC.path('', model.from);
+			model.from = FUNC.path($.user.id, model.from);
 			var to = PATH.join(model.from.split('/').slice(0, -1).join('/'), model.name);
 
 			// Rename

@@ -102,14 +102,14 @@ function fs_load() {
 		userid = $.user.id;
 
 	// Auth - Invalid
-	if (!userid) {
+	if (!userid && !$.user.sa) {
 		$.invalid(401);
 		return;
 	}
 
 	// Perform download
 	if (FUNC.valid(path))
-		PATH.fs.readFile(FUNC.path('', path), 'utf8', function(err, data) {
+		PATH.fs.readFile(FUNC.path(userid, path), 'utf8', function(err, data) {
 			if(err) {
 				console.error(err);
 				$.invalid(500);
@@ -137,7 +137,7 @@ function fs_save() {
 		userid = $.user.id;
 
 	// Auth - Invalid
-	if (!userid) {
+	if (!userid && !$.user.sa) {
 		$.invalid(401);
 		return;
 	}
@@ -145,7 +145,7 @@ function fs_save() {
 	// Save file
 	if (FUNC.valid(path))
 
-		PATH.fs.writeFile(FUNC.path('', path), $.body.data, 'utf8', function(err, data) {
+		PATH.fs.writeFile(FUNC.path(userid, path), $.body.data, 'utf8', function(err, data) {
 			if(err) {
 				$.invalid(500);
 				console.error(err);

@@ -1,2 +1,0 @@
-{"userid":"admin","username":"Admin","ua":"Windows Chrome","ip":"127.0.0.1","url":"/api/","schema":"Files.remove","data":"{\"params\":{},\"query\":{},\"model\":{\"path\":\"/clock.gif\"}}","message":"/clock.gif/","dtcreated":"2021-08-16T21:19:20.212Z"}
-{"userid":"admin","username":"Admin","ua":"Windows Chrome","ip":"127.0.0.1","url":"/api/","schema":"Files.remove","data":"{\"params\":{},\"query\":{},\"model\":{\"path\":\"/a.out\"}}","message":"/a.out/","dtcreated":"2021-08-17T05:38:39.309Z"}

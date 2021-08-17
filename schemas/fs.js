@@ -13,8 +13,7 @@ NEWSCHEMA('Fs', function(schema) {
 
 		var fs = PATH.fs;
 
-		var path = FUNC.path('', original);
-		// var path = FUNC.path($.user.id, U.path(original));
+		var path = FUNC.path($.user.id, U.path(original));
 
 		fs.readdir(path, { withFileTypes: true }, function(err, response) {
 
@@ -55,7 +54,7 @@ NEWSCHEMA('Fs', function(schema) {
 
 	// Remove file or directory
 	schema.setRemove(function($, model) {
-		var path = FUNC.path('', model.path);
+		var path = U.path(model.path) || '/';
 
 		// Can't remove root
 		if (path === '/') {
@@ -76,6 +75,8 @@ NEWSCHEMA('Fs', function(schema) {
 			PUBLISH('file_remove', file);
 			$.success();
 
+			path = FUNC.path($.user.id, path);
+
 			if (file.isdirectory)
 				PATH.fs.rmdir(path, { recursive: true }, $.done());
 			else
@@ -87,7 +88,7 @@ NEWSCHEMA('Fs', function(schema) {
 	// Create empty directory
 	schema.addWorkflow('directory', function($, model) {
 		var fs = PATH.fs;
-		var path = FUNC.path('', model.path);
+		var path = FUNC.path($.user.id, U.path(model.path));
 
 		// Path validation
 		if (FUNC.invalid($, path))
@@ -161,8 +162,8 @@ NEWSCHEMA('Fs', function(schema) {
 		}
 
 		// Prepare paths
-		var path_abs = FUNC.path('', '/');
-		var path_rel = '';
+		var path_abs = FUNC.path($.user.id, '/');
+		var path_rel = path_abs.substring(path_abs.indexOf($.user.id) + $.user.id.length + 1);
 
 		// Recursively search user's data
 		search(q, path_rel, path_abs, files, function() {

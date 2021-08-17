@@ -9,8 +9,8 @@ NEWSCHEMA('Fs/Move', function(schema) {
 		if (FUNC.invalid(from) || FUNC.invalid(model.to))
 			return;
 
-		var from = FUNC.path('', model.from);
-		var to = FUNC.path(model.to, '/');
+		var from = FUNC.path($.user.id, model.from);
+		var to = FUNC.path($.user.id, model.to + '/');				// FIX
 		var fs = PATH.fs;
 
 		// Get filename from path
