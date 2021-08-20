@@ -138,7 +138,7 @@
 			const filename = GET('common.filename');
 			filename && AJAX('POST /fs_save?path=' + encodeURIComponent(filename), {data: GET('common.filedata')}, function(value, err, response) {
 				if (err) {
-					console.error(error);
+					console.error(err);
 				}
 				// exports.browse();
 			});
@@ -147,7 +147,7 @@
 		exports.load = function(el) {
 			AJAX('GET /fs_load?path=' + encodeURIComponent(GET('common.filename')), function(value, err, response) {
 				if (err) {
-					console.error(error);
+					console.error(err);
 				} else {
 					SET('common.filedata', (value ? value.value : value) || '');
 				}
