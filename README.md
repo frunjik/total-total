@@ -3,7 +3,7 @@
 ## !!! WARNING !!!
 
 This code is highly experimental and will (depending on settings),
-*allow access to the complete file system of you server*.
+*allow access to the complete file system of your server*.
 Don't use this if you don't know what you are doing !!!
 
 ### Features
