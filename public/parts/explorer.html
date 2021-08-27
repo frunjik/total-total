@@ -20,7 +20,7 @@
 		</script>
 	</div>
 
-	<div data---="navlayout__common.menu__parent:window;width:350;hide:xs" class="invisible">
+	<div data---="navlayout__?.menu__parent:window;width:350;hide:xs" class="invisible">
 
 		<section>
 
@@ -78,11 +78,11 @@
 			<div class="toolbar">
 				<button class="exec" data-exec="?/save" title="@(Save file)"><i class="fa fa-cloud-upload"></i></button>
 				<button class="exec" data-exec="?/load" title="@(Load file)"><i class="fa fa-cloud-download"></i></button>
-				<label data---="contenteditable__common.filename"></label>
+				<label data---="contenteditable__?.filename"></label>
 			</div>
 
 			<div style="width:100%">
-				<div data---="codemirror__common.filedata__type:htmlmixed;required:false;height:880"></div>
+				<div data---="codemirror__?.filedata__type:htmlmixed;required:false;height:880"></div>
 			</div>
 
 		</main>
@@ -95,18 +95,10 @@
 
 	PLUGIN('~PATH~', function(exports) {
 
-		SET('~PATH~.view', 'list');
-
-		SET('common.menu', true);
-		SET('common.filedata', '');
-		SET('common.filename', '');
-
-		exports.refresh = function() {
-
-		};
-
-		exports.breadcrumb = function(path) {
-		};
+		SET('?.menu', true);
+		SET('?.view', 'list');
+		SET('?.filedata', '');
+		SET('?.filename', '');
 
 		exports.upload = function() {
 			var opt = {};
@@ -135,8 +127,8 @@
 		};
 
 		exports.save = function(el) {
-			const filename = GET('common.filename');
-			filename && AJAX('POST /fs_save?path=' + encodeURIComponent(filename), {data: GET('common.filedata')}, function(value, err, response) {
+			const filename = GET('?.filename');
+			filename && AJAX('POST /fs_save?path=' + encodeURIComponent(filename), {data: GET('?.filedata')}, function(value, err, response) {
 				if (err) {
 					console.error(err);
 				}
@@ -145,11 +137,11 @@
 		};
 
 		exports.load = function(el) {
-			AJAX('GET /fs_load?path=' + encodeURIComponent(GET('common.filename')), function(value, err, response) {
+			AJAX('GET /fs_load?path=' + encodeURIComponent(GET('?.filename')), function(value, err, response) {
 				if (err) {
 					console.error(err);
 				} else {
-					SET('common.filedata', (value ? value.value : value) || '');
+					SET('?.filedata', (value ? value.value : value) || '');
 				}
 			});
 		};
@@ -160,7 +152,7 @@
 			if (isdir)
 				exports.browse(path);
 			else {
-				SET('common.filename', path);
+				SET('?.filename', path);
 				exports.load();
 			}
 		};
@@ -168,13 +160,6 @@
 		exports.view = function(el) {
 			var view = el.attrd('name');
 			SET('?.view', view);
-		};
-
-		exports.settings = function() {
-			DAPI('settings_read @showloading', ASETTER('message/response @hideloading', function(response) {
-				SET('settingsform @reset', response);
-				SET('common.form', 'settingsform');
-			}));
 		};
 
 		exports.contextmenu = function(e) {
@@ -245,7 +230,7 @@
 				if (item.isdirectory)
 					exports.browse(item.path);
 				else {
-					SET('common.filename', item.path);
+					SET('?.filename', item.path);
 					exports.load();
 				}
 			};
